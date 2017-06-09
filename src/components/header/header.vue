@@ -26,45 +26,47 @@
         <span class="icon-keyboard_arrow_right"></span>
       </div>
     </div>
-    <div class="seller-details" v-show="floatingShow">
-      <div class="wrapper clearfix">
-        <div class="main">
-          <div class="title">
-            <div v-text="seller.name" class="name"></div>
-            <star :score="seller.score" :size="48"></star>
-          </div>
-          <div class="seller-msg">
-            <div class="msg-header">
-              <div class="line"></div>
-              <div class="text">优惠信息</div>
-              <div class="line"></div>
+    <transition name="fade">
+      <div class="seller-details" v-show="floatingShow">
+        <div class="wrapper clearfix">
+          <div class="main">
+            <div class="title">
+              <div v-text="seller.name" class="name"></div>
+              <star :score="seller.score" :size="48"></star>
             </div>
-            <div class="cont">
-              <div v-if="seller.supports" class="discount" v-for="item in seller.supports">
-                <span class="icon" :class="classMap[item.type]"></span>
-                <span v-text="item.description"></span>
+            <div class="seller-msg">
+              <div class="msg-header">
+                <div class="line"></div>
+                <div class="text">优惠信息</div>
+                <div class="line"></div>
+              </div>
+              <div class="cont">
+                <div v-if="seller.supports" class="discount" v-for="item in seller.supports">
+                  <span class="icon" :class="classMap[item.type]"></span>
+                  <span v-text="item.description"></span>
+                </div>
+              </div>
+            </div>
+            <div class="seller-msg">
+              <div class="msg-header">
+                <div class="line"></div>
+                <div class="text">商家公告</div>
+                <div class="line"></div>
+              </div>
+              <div class="cont">
+                <div class="introduce" v-text="seller.bulletin"></div>
+                <!--<div class="introduce" v-text="seller.bulletin"></div>-->
+                <!--<div class="introduce" v-text="seller.bulletin"></div>-->
+                <!--<div class="introduce" v-text="seller.bulletin"></div>-->
               </div>
             </div>
           </div>
-          <div class="seller-msg">
-            <div class="msg-header">
-              <div class="line"></div>
-              <div class="text">商家公告</div>
-              <div class="line"></div>
-            </div>
-            <div class="cont">
-              <div class="introduce" v-text="seller.bulletin"></div>
-              <!--<div class="introduce" v-text="seller.bulletin"></div>-->
-              <!--<div class="introduce" v-text="seller.bulletin"></div>-->
-              <!--<div class="introduce" v-text="seller.bulletin"></div>-->
-            </div>
-          </div>
+        </div>
+        <div class="footer-close">
+          <span class="icon-close" @click="closeFloating"></span>
         </div>
       </div>
-      <div class="footer-close">
-        <span class="icon-close" @click="closeFloating"></span>
-      </div>
-    </div>
+    </transition>
   </div>
 </template>
 
@@ -75,7 +77,7 @@ export default {
   name: 'header',
   data () {
     return {
-      floatingShow: true
+      floatingShow: false
     };
   },
   props: {
@@ -181,6 +183,7 @@ export default {
           text-overflow ellipsis
           white-space nowrap
           overflow: hidden
+          line-height:28px
         &.notice-icon
           background-color: #fff
           color: #4d555d
@@ -201,6 +204,7 @@ export default {
     width:100%;
     height: 100%
     background: rgba(7,17,27,0.8)
+    overflow: auto
     .wrapper
       width: 100%
       height:auto
@@ -264,7 +268,9 @@ export default {
       clear: both
       height: 96px
       margin-top -96px
-      text-align center
+      display: flex
+      justify-content center
+      align-items center
       .icon-close
         font-size 32px
         color: rgba(255,255,255,0.5)
@@ -287,4 +293,9 @@ export default {
         bg-image("invoice_1")
       &.special
         bg-image("special_1")
+
+.fade-enter-active,.fade-leave-active
+  transition: opacity .5s
+.fade-enter,.fade-leave-active
+  opacity 0
 </style>

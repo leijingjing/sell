@@ -53,7 +53,4 @@
         font-size: 14px
         &.router-link-active
           color: #f01414
-
-    .content
-      background: #f3f5f7
 </style>

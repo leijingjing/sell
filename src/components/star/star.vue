@@ -1,7 +1,6 @@
 <template>
   <div class="star" :class="starType">
     <span v-for="itemClass in starItem" :class="itemClass" class="star-iten"></span>
-    <!--<span>{{score}}</span>-->
   </div>
 </template>
 

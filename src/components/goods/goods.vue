@@ -1,9 +1,11 @@
 <template>
   <div class="goods">
-    <div class="menu-list">
-
+    <div class="menu-wrapper">
+      <ul class="menu-list">
+        <li v-for="good in goods" v-text="good.name"></li>
+      </ul>
     </div>
-    <div class="items-list">
+    <div class="foods-wrapper">
       <div class="items">
         <div class="item-name">单人特色套餐</div>
         <div class="foods">
@@ -35,7 +37,7 @@
     mounted () {
       this.$http.get('/api/goods').then(response => {
         if (response.body.errno === ERRO_NO) {
-//          console.log(response.body.data);
+          console.log(response.body.data);
           this.goods = response.body.data;
         }
       });
@@ -44,4 +46,25 @@
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus">
+.goods
+  width: 100%
+  display: flex
+  position: absolute
+  top: 174px
+  bottom:48px
+  font-size 12px
+  background: #f3f5f7
+  .menu-wrapper
+    width:80px
+    flex:0 0 80px
+    .menu-list
+      li
+        height:54px
+        padding:0 12px
+        line-height:14px
+        display: flex
+        align-items center
+  .foods-wrapper
+    flex:1
+
 </style>
