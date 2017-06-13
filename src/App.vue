@@ -41,7 +41,7 @@
     -webkit-font-smoothing: antialiased
     -moz-osx-font-smoothing: grayscale
     color: #4d555d
-    font-weight 200
+    font-weight normal
     .tab
       height: 40px
       line-height: 40px
