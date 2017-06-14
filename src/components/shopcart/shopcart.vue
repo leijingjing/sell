@@ -16,6 +16,7 @@
 <script type="text/ecmascript-6">
 export default {
   name: 'shopcart',
+  data () {},
   props: {
     deliveryPrice: {
       type: Number
