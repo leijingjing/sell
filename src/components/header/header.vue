@@ -123,6 +123,7 @@ export default {
       position: relative
       top:0
       left:0
+      overflow: hidden
       .supports-count
         height: 24px
         padding: 0 8px 0 10px
@@ -149,6 +150,7 @@ export default {
         padding-top: 2px
         .title
           margin-bottom 8px
+          font-size 0
           .brand
             display: inline-block
             width: 30px

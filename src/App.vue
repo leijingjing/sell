@@ -7,13 +7,14 @@
       <router-link to="/seller" class="tab-item">商家</router-link>
     </div>
     <div class="content">
-      <router-view></router-view>
+      <router-view :seller="seller"></router-view>
     </div>
   </div>
 </template>
 
 <script>
   import header from './components/header/header';
+
   const ERRO_NO = 0;
   export default {
     data () {
@@ -27,7 +28,6 @@
     created () {
       this.$http.get('/api/seller').then(response => {
         if (response.body.errno === ERRO_NO) {
-//          console.log(response.body.data);
           this.seller = response.body.data;
         }
       });
