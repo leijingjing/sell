@@ -15,39 +15,39 @@
         <ul>
           <li class="items items-hook" v-for="item in goods">
             <div class="item-name" v-text="item.name"></div>
-            <div class="foods border-1px" v-if="item.foods" v-for="good in item.foods">
+            <div class="foods border-1px" v-if="item.foods" v-for="food in item.foods">
               <div class="foods-img">
-                <img width="57" height="57" :src="good.icon" alt="">
+                <img width="57" height="57" :src="food.icon" alt="">
               </div>
               <div class="descrip">
-                <p class="foods-name" v-text="good.name"></p>
-                <p class="description" v-if="good.description" v-text="good.description"></p>
-                <p class="description"><span>月售{{good.sellCount}}份</span>好评率{{good.rating}}%</p>
-                <p class="price">￥<span v-text="good.price"></span><span v-if="good.oldPrice" class="oldprice">￥{{good.oldPrice}}</span></p>
+                <p class="foods-name" v-text="food.name"></p>
+                <p class="description" v-if="food.description" v-text="food.description"></p>
+                <p class="description"><span>月售{{food.sellCount}}份</span>好评率{{food.rating}}%</p>
+                <p class="price">￥<span v-text="food.price"></span><span v-if="food.oldPrice" class="oldprice">￥{{food.oldPrice}}</span></p>
               </div>
               <div class="add-to-cart">
-                <span class="icon-remove_circle_outline"></span>
-                <span class="number">1</span>
-                <span class="icon-add_circle"></span>
+                <v-cartcontrol :food="food" @cartAdd="cartAdd"></v-cartcontrol>
               </div>
             </div>
           </li>
         </ul>
       </div>
     </div>
-    <v-shopcart :minPrice="seller.minPrice" :deliveryPrice="seller.deliveryPrice"></v-shopcart>
+    <v-shopcart :minPrice="seller.minPrice" :deliveryPrice="seller.deliveryPrice" :selectedFoods="selectedFoods" ref="shopcart"></v-shopcart>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
+
   import BScroll from 'better-scroll';
   import shopCart from '../shopcart/shopcart';
+  import cartcontrol from '../cartcontrol/cartcontrol';
   const ERRO_NO = 0;
   export default {
     name: 'goods',
     data () {
       return {
-        goods: {},
+        goods: [],
         listHeight: [],
         scrollIndex: 0
       };
@@ -58,7 +58,8 @@
       }
     },
     components: {
-      'v-shopcart': shopCart
+      'v-shopcart': shopCart,
+      'v-cartcontrol': cartcontrol
     },
     computed: {
       menuCurrentIndex () {
@@ -70,6 +71,17 @@
           }
         }
         return 0;
+      },
+      selectedFoods () {
+        let foods = [];
+        this.goods.forEach((good) => {
+         good.foods.forEach((food) => {
+            if (food.count) {
+              foods.push(food);
+            }
+          });
+        });
+        return foods;
       }
     },
     mounted () {
@@ -93,7 +105,8 @@
           click: true
         });
         this.foodScroll = new BScroll(this.$refs.foodWrapper, {
-          probeType: 3
+          probeType: 3,
+          click: true
         });
         this.foodScroll.on('scroll', (pos) => {
           this.scrollIndex = Math.abs(Math.round(pos.y));
@@ -113,6 +126,9 @@
           return;
         }
         this.foodScroll.scrollTo(0, -this.listHeight[index], 300);
+      },
+      cartAdd (target) {
+        this.$refs.shopcart.cartAdd(target);
       }
     }
   };
@@ -218,20 +234,9 @@
             .oldprice
               color: rgb(147,153,159)
               text-decoration line-through
-
         .add-to-cart
           position: absolute
           right:0
-          bottom:14px
-          font-size 0
-          span
-            font-size 24px
-            line-height: 24px
-            color: rgb(0,160,220)
-            vertical-align: top
-            &.number
-              color: rgb(147,153,159)
-              font-size 12px
-              line-height:24px
-              margin: 0 6px
+          bottom:8px
+
 </style>
