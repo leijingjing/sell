@@ -128,7 +128,10 @@
         this.foodScroll.scrollTo(0, -this.listHeight[index], 300);
       },
       cartAdd (target) {
-        this.$refs.shopcart.cartAdd(target);
+        // 体验优化，异步执行下落动画
+        this.$nextTick(() => {
+          this.$refs.shopcart.cartAdd(target);
+        });
       }
     }
   };

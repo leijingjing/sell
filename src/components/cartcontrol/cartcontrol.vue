@@ -9,16 +9,14 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import Vue from 'vue';
-//  let eventHub = new Vue();
+
+import Vue from 'vue';
+
 export default {
   props: {
     food: {
       type: Object
     }
-  },
-  created () {
-
   },
   methods: {
     countAdd (event) {
