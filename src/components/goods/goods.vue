@@ -15,7 +15,7 @@
         <ul>
           <li class="items items-hook" v-for="item in goods">
             <div class="item-name" v-text="item.name"></div>
-            <div class="foods border-1px" v-if="item.foods" v-for="food in item.foods">
+            <div class="foods border-1px" v-if="item.foods" v-for="food in item.foods" @click="showFoodDetail(food,$event)">
               <div class="foods-img">
                 <img width="57" height="57" :src="food.icon" alt="">
               </div>
@@ -33,6 +33,7 @@
         </ul>
       </div>
     </div>
+    <food :food="selectedFood" ref="foodDetail" @cartAdd="cartAdd"></food>
     <v-shopcart :minPrice="seller.minPrice" :deliveryPrice="seller.deliveryPrice" :selectedFoods="selectedFoods" ref="shopcart"></v-shopcart>
   </div>
 </template>
@@ -42,6 +43,8 @@
   import BScroll from 'better-scroll';
   import shopCart from '../shopcart/shopcart';
   import cartcontrol from '../cartcontrol/cartcontrol';
+  import food from '../food/food';
+
   const ERRO_NO = 0;
   export default {
     name: 'goods',
@@ -49,7 +52,8 @@
       return {
         goods: [],
         listHeight: [],
-        scrollIndex: 0
+        scrollIndex: 0,
+        selectedFood: {}
       };
     },
     props: {
@@ -59,7 +63,8 @@
     },
     components: {
       'v-shopcart': shopCart,
-      'v-cartcontrol': cartcontrol
+      'v-cartcontrol': cartcontrol,
+      'food': food
     },
     computed: {
       menuCurrentIndex () {
@@ -132,6 +137,13 @@
         this.$nextTick(() => {
           this.$refs.shopcart.cartAdd(target);
         });
+      },
+      showFoodDetail (food, event) {
+        if (!event._constructed) {
+          return;
+        }
+        this.selectedFood = food;
+        this.$refs.foodDetail.show();
       }
     }
   };
@@ -237,6 +249,7 @@
             .oldprice
               color: rgb(147,153,159)
               text-decoration line-through
+              font-weight 700
         .add-to-cart
           position: absolute
           right:0
