@@ -81,6 +81,8 @@ export default {
 .ratingselect
   margin-top 18px
   overflow: hidden
+  border-bottom 1px solid rgba(7,17,27,0.1)
+  padding 0 18px
   .selectbtn
     display: flex
     border-1px(rgba(7,17,27,0.1))

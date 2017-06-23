@@ -63,7 +63,7 @@
     .star-iten
       width: 10px
       height: 10px
-      margin-right 10px
+      margin-right 3px
       &.on
         bg-image('star24_on')
       &.half
@@ -74,7 +74,7 @@
     .star-iten
       width: 15px
       height: 15px
-      margin-right 15px
+      margin-right 6px
       &.on
         bg-image('star36_on')
       &.half

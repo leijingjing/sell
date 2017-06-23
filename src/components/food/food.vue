@@ -27,11 +27,11 @@
           <div class="msgtitle">商品评价</div>
           <ratingselect @switch="switchBtn" @check="checkRatingType" :onlyContent="onlyContent" :selectType="selectType" :desc="desc" :rating="food.ratings"></ratingselect>
         </div>
-        <div class="rating">
+        <div class="food-rating">
           <ul v-show="food.ratings && food.ratings.length">
-            <li v-for="rate in food.ratings" class="border-1px">
+            <li v-for="rate in food.ratings" class="border-1px" v-show="ratingShowState(rate.rateType, rate.text)">
               <div class="ratemsg">
-                <div class="date" v-text="rate.rateTime"></div>
+                <div class="date">{{rate.rateTime | formatDate}}</div>
                 <div class="usermsg">
                   <span class="username" v-text="rate.username"></span>
                   <img class="avatar" :src="rate.avatar" alt="">
@@ -56,6 +56,7 @@
   import Vue from 'vue';
   import separation from 'components/separation/separation';
   import ratingselect from 'components/ratingselect/ratingselect';
+  import {formatDate} from 'common/js/date';
 
   const POSITIVE = 0;
   const NEGATIVE = 1;
@@ -80,8 +81,11 @@
         type: Object
       }
     },
-    computed: {
-
+    filters: {
+      formatDate (time) {
+        let date = new Date(time);
+        return formatDate(date, 'yyyy-MM-dd hh:mm');
+      }
     },
     components: {
       'v-cartontrol': cartcontrol,
@@ -119,6 +123,9 @@
       },
       switchBtn () {
         this.onlyContent = !this.onlyContent;
+        this.$nextTick(() => {
+          this.detailScroll.refresh();
+        });
       },
       checkRatingType (type) {
         if (type === ALL) {
@@ -128,6 +135,24 @@
         } else if (type === NEGATIVE) {
           this.selectType = NEGATIVE;
         }
+        this.$nextTick(() => {
+          this.detailScroll.refresh();
+        });
+      },
+      ratingShowState (type, text) {
+        if (this.onlyContent && !text) {
+          return false;
+        }
+        if (this.selectType === ALL) {
+          return true;
+        } else {
+          return this.selectType === type;
+        }
+      },
+      ratingTime (ratetime) {
+        let time = new Date();
+        time.setTime(ratetime * 1000);
+        return time.toJSON();
       }
     }
   };
@@ -225,13 +250,13 @@
         font-size 12px
         line-height:24px
     .foodrate
-      padding-bottom 0
+      padding  18px 0 0 0
       .msgtitle
         font-size:14px
         line-height: 14px
         margin-bottom 6px
-    .rating
-      border-top 1px solid rgba(7,17,27,0.1)
+        padding 0 18px
+    .food-rating
       padding:0 18px
       ul
         li
@@ -269,6 +294,10 @@
               line-height 12px
               color: rgb(7,17,27)
               vertical-align: top
+      .no-rating
+        padding 16px 0
+        font-size 12px
+        color rgb(147,153,159)
 
   .foodShow-enter,.foodShow-leave-active
     transform translate3d(100%,0,0)
