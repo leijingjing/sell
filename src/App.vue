@@ -7,28 +7,37 @@
       <router-link to="/seller" class="tab-item">商家</router-link>
     </div>
     <div class="content">
-      <router-view :seller="seller"></router-view>
+      <keep-alive>
+        <router-view :seller="seller"></router-view>
+      </keep-alive>
     </div>
   </div>
 </template>
 
 <script>
-  import header from './components/header/header';
+  import header from 'components/header/header';
+  import {urlParse} from 'common/js/util';
 
   const ERRO_NO = 0;
   export default {
     data () {
       return {
-        seller: {}
+        seller: {
+          id: (() => {
+            // 立即执行函数
+            let parameter = urlParse();
+            return parameter.id;
+          })()
+        }
       };
     },
     components: {
       'v-header': header
     },
     created () {
-      this.$http.get('/api/seller').then(response => {
+      this.$http.get('/api/seller?id=' + this.seller.id).then(response => {
         if (response.body.errno === ERRO_NO) {
-          this.seller = response.body.data;
+          this.seller = Object.assign({}, this.seller, response.body.data);
         }
       });
     }

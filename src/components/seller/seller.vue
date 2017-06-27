@@ -70,10 +70,14 @@
   import BScroll from 'better-scroll';
   import separation from 'components/separation/separation';
   import star from 'components/star/star';
+  import {setStorage, getStorage} from 'common/js/store';
+
   export default {
     data () {
       return {
-        collected: false
+        collected: (() => {
+          return getStorage(this.seller.id, 'collextedState', false);
+        })()
       };
     },
     components: {
@@ -144,6 +148,7 @@
           return;
         }
         this.collected = !this.collected;
+        setStorage(this.seller.id, 'collextedState', this.collected);
       }
     }
   };
